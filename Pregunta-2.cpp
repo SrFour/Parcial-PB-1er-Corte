@@ -1,3 +1,4 @@
+/*
 /* Cifrar y Descifrar mensajes, segun el desplazamiento de letras
 * vector char codificacionDecodificacion: contiene todas las letras del abecedario, minusculas 
 * como mayusculas
@@ -14,9 +15,11 @@
 * Valor 0, sino funciona ninguno de los dos
 */
 
+
 #include<iostream>
 #include<conio.h>
 #include<string.h>
+
 
 using namespace std;
 
@@ -26,28 +29,62 @@ char codificacionDecodificacion[] = {
         'b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z'
 };
 
-// Funci√≥n para cifrar un mensaje utilizando el cifrado C√©sar
-void cifrarMensaje(char* m, int desplazamiento,char* code) {
 
+
+int buscarPosicion(char letra, char* code, int tam) {
+    for (int i = 0; i < tam; i++) {
+        if (*(code + i) == letra) {
+            return i;
+        }
+    }
+    return -1;
 }
 
-// Funci√≥n para descifrar un mensaje utilizando el cifrado C√©sar
+// FunciÛn para cifrar un mensaje utilizando el cifrado CÈsar
+void cifrarMensaje(char* m, int desplazamiento, char* code) {
+    int tam = sizeof(codificacionDecodificacion)/sizeof(codificacionDecodificacion[0]);
+    cout<<"Mensaje cifrado: ";
+    for (char* ptr = m; *ptr != '\0'; ptr++) {
+        int pos = buscarPosicion(*ptr, code, tam);
+        if (pos != -1) {
+            int nuevaPos = (pos + desplazamiento) % tam;
+            cout<<*(code + nuevaPos);
+        }
+    }
+    cout<<endl;
+}
+
+// FunciÛn para descifrar un mensaje utilizando el cifrado CÈsar
 void descifrarMensaje(char* m, int desplazamiento, char* code) {
-
-
+    int tam = sizeof(codificacionDecodificacion)/sizeof(codificacionDecodificacion[0]);
+    cout<<"Mensaje descifrado: ";
+    for (char* ptr = m; *ptr != '\0'; ptr++) {
+        int pos = buscarPosicion(*ptr, code, tam);
+        if (pos != -1) {
+            int nuevaPos = (pos - desplazamiento + tam) % tam;
+            cout<<*(code + nuevaPos);
+        }
+    }
+    cout << endl;
 }
+
+/******************************************************************************************/
 
 int main() {
     char mensaje[100];
     int d = 0;
-    cout << "Digite mensaje a cifrar: ";
-    cin >> mensaje;
-    cout << "Digite desplazamiento: ";
-    cin >> d;
-    cifrarMensaje(mensaje, d,codificacionDecodificacion);
-    cout <<endl << "Digite mensaje descifrar: ";
-    cin >> mensaje;
+
+    cout<<"Digite mensaje a cifrar: ";
+    cin>>mensaje;
+    cout<<"Digite desplazamiento: ";
+    cin>>d;
+    cifrarMensaje(mensaje, d, codificacionDecodificacion);
+
+    cout<<endl<<"Digite mensaje a descifrar: ";
+    cin>>mensaje;
     descifrarMensaje(mensaje, d, codificacionDecodificacion);
 
     return 0;
 }
+
+/**********************************************************************************************/
